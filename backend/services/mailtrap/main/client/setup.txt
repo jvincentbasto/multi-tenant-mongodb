@@ -1,0 +1,128 @@
+Setup 
+  - Domain (Paid)
+  - Custom Email Usage (Free)
+    - Send & Receive with Custom Emai
+
+
+1 Mailtrap (Send emails with domain)
+  # Domain Registrar
+    - Own a domain from a "domain registrar"
+
+  # Mailtrap 
+    - Add your domain in mailtrap
+    - Verify DNS
+    - Use live credentials from "Sending Domain"  
+
+
+2 Google's "App Password"
+  # Google's "app password"
+    - Search "google app password" | https://myaccount.google.com/apppasswords 
+    - Create app and copy generated password
+
+  # Domain Registrar
+    - Own a domain from a "domain registrar"
+
+  # Mailtrap 
+    - Add your domain in mailtrap
+    - Verify DNS
+    - Use live credentials from "Sending Domain"
+
+  # envs: 
+    MAILTRAP_SANDBOX_GOOGLE_USER = "youremail@gmail.com"
+    MAILTRAP_SANDBOX_GOOGLE_APPS_PASSWORD = ""
+
+
+3 Receive with Custom Email (Reroutes to personal email)
+  # Domain Registrar
+    - Own a domain from a "domain registrar" with email
+    
+  # Mailtrap 
+    - Add your domain in mailtrap
+
+  # Google Cloud Console (Google's OAuth)
+    - search "google cloud console" | https://console.cloud.google.com
+      - Create project 
+      - Navigate to "APIs and Services"
+
+    - Navigate and Initiate "OAuth Consent Screen" (If prompted)
+      - Navigate to "Branding" and fill up all neccessary fields
+        - Set yourself as the developer
+      - Navigate to "Audience" 
+        - Add yourself as a Test User
+    
+    - Navigate to "Credentials" then create credential for "OAuth Client ID"
+      - Select "Application type"
+        - Web Application 
+      - Add "Authorized Redirect URIs" 
+        - https://developers.google.com/oauthplayground 
+      - Create and Copy: 
+        - Client ID
+        - Client Secret
+      - ENVS:
+        - MAILTRAP_OAUTH_GOOGLE_CLIENT_ID
+        - MAILTRAP_OAUTH_GOOGLE_CLIENT_SECRET
+
+    # Gmail
+      - Navigate to options then "see all settings"
+      - Navigate to "Accounts and Import" then "Send mail as"
+        - Click "Add another email address"
+        - Fill up all fields and UNCHECKED: "treat as an alias"
+        - Click next, and fill up fields: (Get Mailtrap's Sending Domain Credentials)
+          - SMTP Server: live.smtp.mailtrap.io
+          - Port: 587
+          - Username: smtp@mailtrap.io
+          - Password: generate mailtrap "token"
+
+  # Cloudflare (Reroute Custom Email)
+    - Add your domain
+    - Navigate to your "domain registrar", 
+      - Navigate to Domain -> DNS -> Nameservers
+      - Replace the nameservers from Cloudflare to your "domain registrar"
+        
+    - Navigate back to Cloudflare
+      - Navigate to Email -> Email Routing -> Routing Rules
+      - Create address
+        - Custom Address: "noreply@customEmail.com"
+        - Destination: "yourEmail@gmail.com"
+
+    - Navigate to mailtrap -> your domain
+      - Add and Verify Mailtrap's DNS records to cloudflare
+        - Set "Proxy Status" to "DNS Only" for all Mailtrap's DNS
+  
+  # Google OAuth Playground
+    - Search "google OAuth playground" | "https://developers.google.com/oauthplayground"
+    - Click on "Option Icon" 
+      - Enable "Use OAuth Credentials"
+        - OAuth Client ID: MAILTRAP_OAUTH_GOOGLE_CLIENT_ID
+        - OAuth Client Secret: MAILTRAP_OAUTH_GOOGLE_CLIENT_SECRET
+    
+    - On Step1: Navigate "Gmail API" 
+      - Enable: https://mail.google.com/
+      - Click: "Authorized APIs"
+    - On Step2: ("Authorization code" filled-out)
+      - Click: "Exchange authorization code for tokens"
+      - Copy: "Refresh token" (MAILTRAP_OAUTH_GOOGLE_REFRESH_TOKEN) 
+
+  # Gmail
+    - Navigate to "options" -> "see all settings"
+    - Navigate to "Accounts and Import" -> "Send mail as"
+      - Click "Add another email address"
+        - Fill up all fields
+        - Disable: "treat as an alias"
+      - Click next
+        - Fill up fields (Your Mailtrap's Domain Credentials)
+          - SMTP Server: live.smtp.mailtrap.io
+          - Port: 587
+          - Username: smtp@mailtrap.io
+          - Password: generate mailtrap "token"
+  
+  # Mailtrap
+    - Navigate to your domain
+    - Use live credentials from "Sending Domain"
+  
+  # envs:
+    MAILTRAP_OAUTH_GOOGLE_EMAIL = "youremail@gmail.com"
+    MAILTRAP_OAUTH_GOOGLE_CLIENT_ID = ""
+    MAILTRAP_OAUTH_GOOGLE_CLIENT_SECRET = ""
+    MAILTRAP_OAUTH_GOOGLE_REFRESH_TOKEN = ""
+    MAILTRAP_OAUTH_GOOGLE_REDIRECT_URI = "https://developers.google.com/oauthplayground"

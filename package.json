@@ -1,0 +1,35 @@
+{
+	"name": "multi-tenant-mongodb",
+	"version": "1.0.0",
+	"description": "",
+	"main": "backend/index.js",
+	"scripts": {
+		"dev": "cross-env NODE_ENV=development nodemon backend/index.js",
+		"start": "cross-env NODE_ENV=production node backend/index.js",
+		"build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+	},
+	"keywords": [],
+	"author": "",
+	"type": "module",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^3.0.2",
+		"cookie-parser": "^1.4.7",
+		"cors": "^2.8.5",
+		"crypto": "^1.0.1",
+		"dotenv": "^17.2.0",
+		"express": "^5.1.0",
+		"googleapis": "^153.0.0",
+		"jsonwebtoken": "^9.0.2",
+		"mailtrap": "^4.2.0",
+		"mongoose": "^8.16.4",
+		"multer": "^2.0.2",
+		"nanoid": "^5.1.5",
+		"nodemailer": "^7.0.5",
+		"uuid": "^11.1.0"
+	},
+	"devDependencies": {
+		"cross-env": "^7.0.3",
+		"nodemon": "^3.1.10"
+	}
+}
